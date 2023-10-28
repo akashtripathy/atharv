@@ -1,0 +1,145 @@
+import 'package:firstproject/pages/Bookappointments.dart';
+import 'package:firstproject/pages/Healthreport.dart';
+import 'package:firstproject/pages/Hub.dart';
+import 'package:firstproject/widgets/Cpaint.dart';
+import 'package:flutter/material.dart';
+
+class DashBoardPage extends StatefulWidget {
+  const DashBoardPage({super.key});
+
+  @override
+  State<DashBoardPage> createState() => _DashBoardPageState();
+}
+
+class _DashBoardPageState extends State<DashBoardPage> {
+  List<String> myList = [
+    "Book Appointment",
+    "My Bookings",
+    "Find Hospital",
+    "Find doctor",
+    "Profiles",
+    "Health Records"
+  ];
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return SingleChildScrollView(
+      child: Center(
+        child: Container(
+          color: Colors.white,
+          height: size.height,
+          width: size.width,
+          child: CustomPaint(
+            painter: MyCustomPainter("Dash"),
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                actions: [
+                  IconButton(
+                      onPressed: () {
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Are You Sure!'),
+                            content: const Text('Do you want to logout?'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'Cancel'),
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, 'OK'),
+                                child: const Text('LogOut'),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.power_settings_new_rounded))
+                ],
+                elevation: 0,
+              ),
+              body: Column(
+                children: [
+                  Container(
+                    width: size.width,
+                    height: size.height / 5,
+                    decoration: const BoxDecoration(
+                        // color: Colors.lightBlueAccent,
+                        ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 20),
+                    child: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Dashboard",
+                          style: TextStyle(
+                              fontSize: 50,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black54),
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  SingleChildScrollView(
+                    child: Container(
+                      height: size.height - 278,
+                      margin: const EdgeInsets.symmetric(horizontal: 15),
+                      child: GridView.count(
+                        primary: false,
+                        padding: const EdgeInsets.all(20),
+                        crossAxisSpacing: 30,
+                        mainAxisSpacing: 30,
+                        crossAxisCount: 2,
+                        children: <Widget>[
+                          for (var i = 0; i < myList.length; i++)
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            myList[i] == "Book Appointment"
+                                                ? const bookAppointments()
+                                                : myList[i] == "Health Records"
+                                                    ? const HealthReports()
+                                                    : HubPage(
+                                                        myList[i].toString())));
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Colors.teal[100],
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Text(
+                                  myList[i].toString(),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
