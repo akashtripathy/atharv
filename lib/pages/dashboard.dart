@@ -1,7 +1,7 @@
-import 'package:firstproject/pages/Bookappointments.dart';
-import 'package:firstproject/pages/Healthreport.dart';
-import 'package:firstproject/pages/Hub.dart';
-import 'package:firstproject/widgets/Cpaint.dart';
+import 'package:atharv/pages/book_appointments.dart';
+import 'package:atharv/pages/health_report.dart';
+import 'package:atharv/pages/hub.dart';
+import 'package:atharv/widgets/custom_layout.dart';
 import 'package:flutter/material.dart';
 
 class DashBoardPage extends StatefulWidget {
@@ -107,7 +107,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                                     MaterialPageRoute(
                                         builder: (context) =>
                                             myList[i] == "Book Appointment"
-                                                ? const bookAppointments()
+                                                ? const BookAppointments()
                                                 : myList[i] == "Health Records"
                                                     ? const HealthReports()
                                                     : HubPage(

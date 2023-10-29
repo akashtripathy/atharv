@@ -1,5 +1,5 @@
-import 'package:firstproject/pages/Fulllist.dart';
-import 'package:firstproject/widgets/Cpaint.dart';
+import 'package:atharv/pages/full_list.dart';
+import 'package:atharv/widgets/custom_layout.dart';
 import 'package:flutter/material.dart';
 
 class HealthReports extends StatefulWidget {
@@ -241,7 +241,7 @@ class _HealthReportsState extends State<HealthReports> {
                                             MaterialPageRoute(
                                                 builder: (BuildContext
                                                         context) =>
-                                                    showFullListPage(
+                                                    const ShowFullListPage(
                                                         title:
                                                             "All Bookings")));
                                       },

@@ -1,4 +1,4 @@
-import 'package:firstproject/widgets/Cpaint.dart';
+import 'package:atharv/widgets/custom_layout.dart';
 import 'package:flutter/material.dart';
 
 Color myBlue = Colors.blue[300]!;
@@ -77,7 +77,9 @@ class _ReportCardPageState extends State<ReportCardPage> {
                       ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.black87, backgroundColor: Colors.grey.shade200, elevation: 0, // foreground
+                            foregroundColor: Colors.black87,
+                            backgroundColor: Colors.grey.shade200,
+                            elevation: 0, // foreground
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.0),
                             )),
@@ -191,7 +193,7 @@ class _ReportCardPageState extends State<ReportCardPage> {
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
                             itemCount: 11,
-                            separatorBuilder: (context, int) {
+                            separatorBuilder: (context, int int) {
                               return const SizedBox(
                                 width: 20,
                               );

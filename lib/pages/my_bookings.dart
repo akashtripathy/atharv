@@ -1,14 +1,14 @@
-import 'package:firstproject/pages/Fulllist.dart';
+import 'package:atharv/pages/full_list.dart';
 import 'package:flutter/material.dart';
 
-class myBookingsPage extends StatefulWidget {
-  const myBookingsPage({super.key});
+class MyBookingsPage extends StatefulWidget {
+  const MyBookingsPage({super.key});
 
   @override
-  State<myBookingsPage> createState() => _myBookingsPageState();
+  State<MyBookingsPage> createState() => _MyBookingsPageState();
 }
 
-class _myBookingsPageState extends State<myBookingsPage> {
+class _MyBookingsPageState extends State<MyBookingsPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -89,7 +89,8 @@ class _myBookingsPageState extends State<myBookingsPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (BuildContext context) => showFullListPage(
+                          builder: (BuildContext context) =>
+                              const ShowFullListPage(
                                 title: "Bookings",
                               )));
                 },

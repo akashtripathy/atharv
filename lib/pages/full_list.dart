@@ -1,18 +1,18 @@
-import 'package:firstproject/pages/Hub.dart';
+import 'package:atharv/pages/hub.dart';
 import 'package:flutter/material.dart';
 
-class showFullListPage extends StatefulWidget {
-  String title;
-  showFullListPage({
+class ShowFullListPage extends StatefulWidget {
+  final String title;
+  const ShowFullListPage({
     super.key,
     required this.title,
   });
 
   @override
-  State<showFullListPage> createState() => _showFullListPageState();
+  State<ShowFullListPage> createState() => _ShowFullListPageState();
 }
 
-class _showFullListPageState extends State<showFullListPage> {
+class _ShowFullListPageState extends State<ShowFullListPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -29,7 +29,7 @@ class _showFullListPageState extends State<showFullListPage> {
                 height: size.height - 100,
                 child: ListView.separated(
                   itemCount: 11,
-                  separatorBuilder: (context, int) {
+                  separatorBuilder: (context, int int) {
                     return const Divider();
                   },
                   itemBuilder: (BuildContext context, int index) {

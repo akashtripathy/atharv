@@ -1,12 +1,12 @@
-
 import 'package:flutter/material.dart';
 
-String GenderValue = "";
+String genderValue = "";
 String bloodGroupValue = "";
 String blockValue = "";
 String districtValue = "";
 
 var fieldLIst = [
+  "ID",
   "Name",
   "Age",
   "Select Gender",
@@ -40,14 +40,14 @@ var districtList = [
 
 var bloodGroupList = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 
-class AddMemberPage extends StatefulWidget {
-  const AddMemberPage({super.key});
+class UpdateProfilePage extends StatefulWidget {
+  const UpdateProfilePage({super.key});
 
   @override
-  State<AddMemberPage> createState() => _AddMemberPageState();
+  State<UpdateProfilePage> createState() => _UpdateProfilePageState();
 }
 
-class _AddMemberPageState extends State<AddMemberPage> {
+class _UpdateProfilePageState extends State<UpdateProfilePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -58,17 +58,14 @@ class _AddMemberPageState extends State<AddMemberPage> {
           const SizedBox(
             height: 100,
           ),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              height: 100,
-              width: 100,
-              decoration: BoxDecoration(
-                  border: Border.all(width: 1, color: Colors.black54),
-                  borderRadius: BorderRadius.circular(200),
-                  image: const DecorationImage(
-                      image: AssetImage("images/images.png"))),
-            ),
+          Container(
+            height: 100,
+            width: 100,
+            decoration: BoxDecoration(
+                border: Border.all(width: 1, color: Colors.black54),
+                borderRadius: BorderRadius.circular(200),
+                image: const DecorationImage(
+                    image: AssetImage("images/images.png"))),
           ),
           const SizedBox(
             height: 20,
@@ -78,7 +75,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
             height: size.height * 0.5,
             child: ListView.separated(
                 itemCount: fieldLIst.length,
-                separatorBuilder: (context, int) {
+                separatorBuilder: (context, int int) {
                   return const SizedBox(
                     height: 3,
                   );
@@ -112,7 +109,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
                                   fieldLIst[index] == "Select Block"
                               ? Text(
                                   fieldLIst[index] == "Select Gender"
-                                      ? GenderValue
+                                      ? genderValue
                                       : fieldLIst[index] == "Select Blood Group"
                                           ? bloodGroupValue
                                           : fieldLIst[index] ==
@@ -161,7 +158,8 @@ class _AddMemberPageState extends State<AddMemberPage> {
             child: ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white, backgroundColor: Colors.lightBlueAccent, // foreground
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.lightBlueAccent, // foreground
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   )),
@@ -195,7 +193,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
                         : fieldType == "Select District"
                             ? districtList.length
                             : blockList.length,
-                separatorBuilder: (context, int) {
+                separatorBuilder: (context, int int) {
                   return const Divider();
                 },
                 itemBuilder: (context, index) {
@@ -217,7 +215,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
                       onTap: () {
                         setState(() {
                           fieldType == "Select Gender"
-                              ? GenderValue = genderList[index].toString()
+                              ? genderValue = genderList[index].toString()
                               : fieldType == "Select Blood Group"
                                   ? bloodGroupValue = bloodGroupList[index]
                                   : fieldType == "Select District"

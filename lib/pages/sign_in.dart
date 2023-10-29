@@ -1,15 +1,15 @@
-import 'package:firstproject/pages/Dasboard.dart';
-import 'package:firstproject/pages/SignUp.dart';
-import 'package:firstproject/widgets/Cpaint.dart';
+import 'package:atharv/pages/dashboard.dart';
+import 'package:atharv/pages/sign_up.dart';
+import 'package:atharv/widgets/custom_layout.dart';
 import 'package:flutter/material.dart';
 
-class signInPage extends StatefulWidget {
-  const signInPage({super.key});
+class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
   @override
-  State<signInPage> createState() => _signInPageState();
+  State<SignInPage> createState() => _SignInPageState();
 }
 
-class _signInPageState extends State<signInPage> {
+class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -109,7 +109,9 @@ class _signInPageState extends State<signInPage> {
                                                 const DashBoardPage()));
                                   },
                                   style: ElevatedButton.styleFrom(
-                                      foregroundColor: Colors.white, backgroundColor: Colors.blue[300], // foreground
+                                      foregroundColor: Colors.white,
+                                      backgroundColor:
+                                          Colors.blue[300], // foreground
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(20.0),
@@ -137,7 +139,7 @@ class _signInPageState extends State<signInPage> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const signUpPage()));
+                                                    const SignUpPage()));
                                       },
                                       child: const Text("SignUp"))
                                 ],

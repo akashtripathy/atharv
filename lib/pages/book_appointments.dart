@@ -1,6 +1,5 @@
-import 'package:firstproject/widgets/Cpaint.dart';
+import 'package:atharv/widgets/custom_layout.dart';
 import 'package:flutter/material.dart';
-
 
 String doctorValue = "";
 String hospitalValue = "";
@@ -48,15 +47,15 @@ var hospitalLIst = [
 bool isByDoctor = true;
 bool isByHospital = false;
 
-class bookAppointments extends StatefulWidget {
-  const bookAppointments({super.key, this.restorationId});
+class BookAppointments extends StatefulWidget {
+  const BookAppointments({super.key, this.restorationId});
   final String? restorationId;
 
   @override
-  State<bookAppointments> createState() => _bookAppointmentsState();
+  State<BookAppointments> createState() => _BookAppointmentsState();
 }
 
-class _bookAppointmentsState extends State<bookAppointments>
+class _BookAppointmentsState extends State<BookAppointments>
 
     // this is for calender ............
     with
@@ -237,7 +236,7 @@ class _bookAppointmentsState extends State<bookAppointments>
                                       itemCount: isByDoctor
                                           ? fieldLIst.length
                                           : fieldLIst2.length,
-                                      separatorBuilder: (context, int) {
+                                      separatorBuilder: (context, int int) {
                                         return const Divider();
                                       },
                                       itemBuilder: (context, index) {
@@ -318,7 +317,9 @@ class _bookAppointmentsState extends State<bookAppointments>
                                   child: ElevatedButton(
                                     onPressed: () {},
                                     style: ElevatedButton.styleFrom(
-                                        foregroundColor: Colors.white, backgroundColor: Colors.blue[300], elevation: 0, // foreground
+                                        foregroundColor: Colors.white,
+                                        backgroundColor: Colors.blue[300],
+                                        elevation: 0, // foreground
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(20.0),
@@ -363,7 +364,7 @@ class _bookAppointmentsState extends State<bookAppointments>
                         : fieldType == "Select Member"
                             ? memberLIst.length
                             : 0,
-                separatorBuilder: (context, int) {
+                separatorBuilder: (context, int int) {
                   return const Divider();
                 },
                 itemBuilder: (context, index) {

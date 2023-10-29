@@ -1,9 +1,9 @@
-import 'package:firstproject/pages/Addmember.dart';
-import 'package:firstproject/pages/Healthreport.dart';
-import 'package:firstproject/pages/Mybookings.dart';
-import 'package:firstproject/pages/Profiles.dart';
-import 'package:firstproject/pages/Updateprofile.dart';
-import 'package:firstproject/widgets/Cpaint.dart';
+import 'package:atharv/pages/add_member.dart';
+import 'package:atharv/pages/health_report.dart';
+import 'package:atharv/pages/my_bookings.dart';
+import 'package:atharv/pages/profile.dart';
+import 'package:atharv/pages/update_profile.dart';
+import 'package:atharv/widgets/custom_layout.dart';
 import 'package:flutter/material.dart';
 
 class HubPage extends StatefulWidget {
@@ -35,7 +35,8 @@ class _HubPageState extends State<HubPage> {
                           widget.testText == "Add Member"
                       ? Text(
                           widget.testText,
-                          style: const TextStyle(color: Colors.black, fontSize: 30),
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 30),
                         )
                       : const SizedBox(),
                   titleSpacing: 0,
@@ -102,7 +103,7 @@ class _HubPageState extends State<HubPage> {
                             height: 10,
                           ),
                           widget.testText == "My Bookings"
-                              ? const myBookingsPage()
+                              ? const MyBookingsPage()
                               : widget.testText == "Profiles"
                                   ? const ProfilesPage()
                                   : widget.testText == "Update Profile"

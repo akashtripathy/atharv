@@ -1,6 +1,6 @@
-import 'package:firstproject/pages/Fulllist.dart';
-import 'package:firstproject/pages/Hub.dart';
-import 'package:firstproject/pages/Reportcard.dart';
+import 'package:atharv/pages/full_list.dart';
+import 'package:atharv/pages/hub.dart';
+import 'package:atharv/pages/report_card.dart';
 import 'package:flutter/material.dart';
 
 class ProfilesPage extends StatefulWidget {
@@ -22,7 +22,7 @@ class _ProfilesPageState extends State<ProfilesPage> {
             height: size.height * 0.5,
             child: ListView.separated(
               itemCount: 4,
-              separatorBuilder: (context, int) {
+              separatorBuilder: (context, int int) {
                 return const Divider();
               },
               itemBuilder: (BuildContext context, int index) {
@@ -129,7 +129,8 @@ class _ProfilesPageState extends State<ProfilesPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (BuildContext context) => showFullListPage(
+                        builder: (BuildContext context) =>
+                            const ShowFullListPage(
                               title: "Profiles List",
                             )));
               },
@@ -161,7 +162,8 @@ class _ProfilesPageState extends State<ProfilesPage> {
                               const HubPage("Add Member")));
                 },
                 style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, backgroundColor: Colors.lightBlueAccent, // foreground
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.lightBlueAccent, // foreground
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     )),
@@ -177,7 +179,8 @@ class _ProfilesPageState extends State<ProfilesPage> {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, backgroundColor: Colors.lightBlueAccent, // foreground
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.lightBlueAccent, // foreground
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     )),
