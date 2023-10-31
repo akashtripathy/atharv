@@ -1,15 +1,14 @@
-import 'package:atharv/pages/phone_number_screen.dart';
-import 'package:atharv/pages/sign_up.dart';
+import 'package:atharv/pages/otp_screen.dart';
 import 'package:atharv/widgets/custom_layout.dart';
 import 'package:flutter/material.dart';
 
-class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+class PhoneNumberScreen extends StatefulWidget {
+  const PhoneNumberScreen({super.key});
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<PhoneNumberScreen> createState() => _PhoneNumberScreenState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -24,7 +23,6 @@ class _SignInPageState extends State<SignInPage> {
             backgroundColor: Colors.transparent,
             appBar: AppBar(
               backgroundColor: Colors.transparent,
-              leading: const Center(),
               elevation: 0,
             ),
             body: Stack(
@@ -45,7 +43,7 @@ class _SignInPageState extends State<SignInPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Login",
+                              "Phone No.",
                               style: TextStyle(
                                   fontSize: 50,
                                   fontWeight: FontWeight.bold,
@@ -62,12 +60,21 @@ class _SignInPageState extends State<SignInPage> {
                     width: size.width,
                     height: size.height - 100,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+                        SizedBox(height: size.height/2,), 
+                        //  Container(
+                        //         width: size.width,
+                        //         padding: const EdgeInsets.all(15),
+                        //         color: Colors.blue[300],
+                        //         child: const Text("Provide Your Phone Number", style: TextStyle(color: Colors.white),),
+                        //       ),
+                              // const SizedBox(height: 40,),
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 30),
                           alignment: Alignment.center,
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               TextField(
                                 decoration: InputDecoration(
@@ -81,21 +88,7 @@ class _SignInPageState extends State<SignInPage> {
                                 ),
                               ),
                               const SizedBox(
-                                height: 20,
-                              ),
-                              TextField(
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                  ),
-                                  filled: true,
-                                  hintStyle: TextStyle(color: Colors.grey[800]),
-                                  hintText: "Password",
-                                  fillColor: Colors.grey.shade100,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
+                                height: 100,
                               ),
                               SizedBox(
                                 width: size.width,
@@ -106,7 +99,7 @@ class _SignInPageState extends State<SignInPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const PhoneNumberScreen()));
+                                                 const OtpVarificationPage()));
                                   },
                                   style: ElevatedButton.styleFrom(
                                       foregroundColor: Colors.white,
@@ -117,33 +110,13 @@ class _SignInPageState extends State<SignInPage> {
                                             BorderRadius.circular(20.0),
                                       )),
                                   child: const Text(
-                                    "Login",
+                                    "Send OTP",
                                     style: TextStyle(fontSize: 17),
                                   ),
                                 ),
                               ),
-                              const SizedBox(
-                                height: 50,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text(
-                                    "Don't have an account ? ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const SignUpPage()));
-                                      },
-                                      child: const Text("SignUp"))
-                                ],
-                              )
+                          
+                
                             ],
                           ),
                         ),
