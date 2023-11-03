@@ -1,3 +1,6 @@
+// ignore_for_file: non_constant_identifier_names
+
+import 'package:atharv/pages/dashboard.dart';
 import 'package:atharv/pages/phone_number_screen.dart';
 import 'package:atharv/pages/sign_up.dart';
 import 'package:atharv/widgets/custom_layout.dart';
@@ -10,6 +13,52 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  @override
+  var phoneNoController = TextEditingController();
+  var passController = TextEditingController();
+  Future<void> Login() async {
+    if (phoneNoController.text.length < 10 &&
+        phoneNoController.text.isNotEmpty) {
+      _showMyDialog(
+          "Your contact number should be of 10 digits, but it's ${phoneNoController.text.length}");
+    } else if (phoneNoController.text != "" &&
+        passController.text != "" &&
+        phoneNoController.text.length == 10) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const DashBoardPage()));
+    } else {
+      _showMyDialog("Please check that your fields are filled properly");
+    }
+  }
+
+  Future<void> _showMyDialog(alertTitle) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('$alertTitle'),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('This is a demo alert dialog.'),
+                Text('Would you like to approve of this message?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Approve'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -70,6 +119,8 @@ class _SignInPageState extends State<SignInPage> {
                           child: Column(
                             children: [
                               TextField(
+                                controller: phoneNoController,
+                                maxLength: 10,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(50.0),
@@ -84,6 +135,7 @@ class _SignInPageState extends State<SignInPage> {
                                 height: 20,
                               ),
                               TextField(
+                                controller: passController,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(50.0),
@@ -102,11 +154,7 @@ class _SignInPageState extends State<SignInPage> {
                                 height: 50,
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const PhoneNumberScreen()));
+                                    Login();
                                   },
                                   style: ElevatedButton.styleFrom(
                                       foregroundColor: Colors.white,

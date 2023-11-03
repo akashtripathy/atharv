@@ -11,6 +11,56 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  var nameCotroller = TextEditingController();
+  var phoneNoController = TextEditingController();
+  var passController = TextEditingController();
+  var confPassCotroller = TextEditingController();
+  Future<void> Signup() async {
+    if (phoneNoController.text.length < 10 &&
+        phoneNoController.text.isNotEmpty) {
+      _showMyDialog(
+          "Your contact number should be of 10 digits, but it's ${phoneNoController.text.length}");
+    } else if (phoneNoController.text != "" &&
+        passController.text != "" &&
+        nameCotroller.text != "" &&
+        confPassCotroller.text == passController.text &&
+        phoneNoController.text.length == 10) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const DashBoardPage()));
+    } else if (passController.text != confPassCotroller.text) {
+      _showMyDialog("Confirm Password Did Not Match!");
+    } else {
+      _showMyDialog("Please check that your fields are filled properly!");
+    }
+  }
+
+  Future<void> _showMyDialog(alertTitle) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('$alertTitle'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('$alertTitle'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -78,6 +128,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           child: Column(
                             children: [
                               TextField(
+                                controller: nameCotroller,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(50.0),
@@ -92,6 +143,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                 height: 20,
                               ),
                               TextField(
+                                controller: phoneNoController,
+                                maxLength: 10,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(50.0),
@@ -106,6 +159,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 height: 20,
                               ),
                               TextField(
+                                controller: passController,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(50.0),
@@ -120,6 +174,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 height: 20,
                               ),
                               TextField(
+                                controller: confPassCotroller,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(50.0),
@@ -138,11 +193,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 height: 50,
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const DashBoardPage()));
+                                    Signup();
                                   },
                                   style: ElevatedButton.styleFrom(
                                       foregroundColor: Colors.white,
