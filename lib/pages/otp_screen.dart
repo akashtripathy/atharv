@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:atharv/pages/dashboard.dart';
 import 'package:atharv/widgets/custom_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
@@ -65,7 +66,7 @@ class OtpVarificationPage extends StatelessWidget {
                           margin: const EdgeInsets.symmetric(horizontal: 30),
                           alignment: Alignment.center,
                           child: OtpTextField(
-                            numberOfFields: 6, 
+                            numberOfFields: 6,
                             borderColor: const Color(0xFF512DA8),
                             //set to true to show as box or false to show as dash
                             showFieldAsBox: true,
@@ -82,12 +83,23 @@ class OtpVarificationPage extends StatelessWidget {
                                       title: const Text("Verification Code"),
                                       content: Text(
                                           'Code entered is $verificationCode'),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          DashBoardPage()));
+                                            },
+                                            child: Text("Ok"))
+                                      ],
                                     );
                                   });
                             }, // end onSubmit
                           ),
                         ),
-                      
                       ],
                     ),
                   ),

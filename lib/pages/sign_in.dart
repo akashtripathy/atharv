@@ -1,7 +1,5 @@
 // ignore_for_file: non_constant_identifier_names
-
 import 'package:atharv/pages/dashboard.dart';
-import 'package:atharv/pages/phone_number_screen.dart';
 import 'package:atharv/pages/sign_up.dart';
 import 'package:atharv/widgets/custom_layout.dart';
 import 'package:flutter/material.dart';
@@ -17,17 +15,19 @@ class _SignInPageState extends State<SignInPage> {
   var phoneNoController = TextEditingController();
   var passController = TextEditingController();
   Future<void> Login() async {
-    if (phoneNoController.text.length < 10 &&
-        phoneNoController.text.isNotEmpty) {
-      _showMyDialog(
-          "Your contact number should be of 10 digits, but it's ${phoneNoController.text.length}");
-    } else if (phoneNoController.text != "" &&
-        passController.text != "" &&
-        phoneNoController.text.length == 10) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const DashBoardPage()));
-    } else {
-      _showMyDialog("Please check that your fields are filled properly");
+    if (_formKey.currentState!.validate()) {
+      if (phoneNoController.text.length < 10 &&
+          phoneNoController.text.isNotEmpty) {
+        _showMyDialog(
+            "Your contact number should be of 10 digits, but it's ${phoneNoController.text.length}");
+      } else if (phoneNoController.text != "" &&
+          passController.text != "" &&
+          phoneNoController.text.length == 10) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const DashBoardPage()));
+      } else {
+        _showMyDialog("Please check that your fields are filled properly");
+      }
     }
   }
 
@@ -60,6 +60,8 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   @override
+  final _formKey = GlobalKey<FormState>();
+
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Center(
@@ -116,83 +118,100 @@ class _SignInPageState extends State<SignInPage> {
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 30),
                           alignment: Alignment.center,
-                          child: Column(
-                            children: [
-                              TextField(
-                                controller: phoneNoController,
-                                maxLength: 10,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                  ),
-                                  filled: true,
-                                  hintStyle: TextStyle(color: Colors.grey[800]),
-                                  hintText: "Phone No.",
-                                  fillColor: Colors.grey.shade100,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              TextField(
-                                controller: passController,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                  ),
-                                  filled: true,
-                                  hintStyle: TextStyle(color: Colors.grey[800]),
-                                  hintText: "Password",
-                                  fillColor: Colors.grey.shade100,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              SizedBox(
-                                width: size.width,
-                                height: 50,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    Login();
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                TextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter some text';
+                                    }
+                                    return null;
                                   },
-                                  style: ElevatedButton.styleFrom(
-                                      foregroundColor: Colors.white,
-                                      backgroundColor:
-                                          Colors.blue[300], // foreground
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                      )),
-                                  child: const Text(
-                                    "Login",
-                                    style: TextStyle(fontSize: 17),
+                                  controller: phoneNoController,
+                                  maxLength: 10,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(50.0),
+                                    ),
+                                    filled: true,
+                                    hintStyle:
+                                        TextStyle(color: Colors.grey[800]),
+                                    hintText: "Phone No.",
+                                    fillColor: Colors.grey.shade100,
                                   ),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 50,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text(
-                                    "Don't have an account ? ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                TextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter some text';
+                                    }
+                                    return null;
+                                  },
+                                  controller: passController,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(50.0),
+                                    ),
+                                    filled: true,
+                                    hintStyle:
+                                        TextStyle(color: Colors.grey[800]),
+                                    hintText: "Password",
+                                    fillColor: Colors.grey.shade100,
                                   ),
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const SignUpPage()));
-                                      },
-                                      child: const Text("SignUp"))
-                                ],
-                              )
-                            ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                SizedBox(
+                                  width: size.width,
+                                  height: 50,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Login();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        foregroundColor: Colors.white,
+                                        backgroundColor:
+                                            Colors.blue[300], // foreground
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                        )),
+                                    child: const Text(
+                                      "Login",
+                                      style: TextStyle(fontSize: 17),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 50,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      "Don't have an account ? ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const SignUpPage()));
+                                        },
+                                        child: const Text("SignUp"))
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ],
