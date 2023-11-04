@@ -1,4 +1,5 @@
 import 'package:atharv/pages/dashboard.dart';
+import 'package:atharv/pages/phone_number_screen.dart';
 import 'package:atharv/pages/sign_in.dart';
 import 'package:atharv/widgets/custom_layout.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,60 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  var nameCotroller = TextEditingController();
+  var phoneNoController = TextEditingController();
+  var passController = TextEditingController();
+  var confPassCotroller = TextEditingController();
+  Future<void> Signup() async {
+    if (_formKey.currentState!.validate()) {
+      if (phoneNoController.text.length < 10 &&
+          phoneNoController.text.isNotEmpty) {
+        _showMyDialog(
+            "Your contact number should be of 10 digits, but it's ${phoneNoController.text.length}");
+      } else if (phoneNoController.text != "" &&
+          passController.text != "" &&
+          nameCotroller.text != "" &&
+          confPassCotroller.text == passController.text &&
+          phoneNoController.text.length == 10) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const PhoneNumberScreen()));
+      } else if (passController.text != confPassCotroller.text) {
+        _showMyDialog("Confirm Password Did Not Match!");
+      } else {
+        _showMyDialog("Please check that your fields are filled properly!");
+      }
+    }
+  }
+
+  Future<void> _showMyDialog(alertTitle) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('$alertTitle'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('$alertTitle'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
+  final _formKey = GlobalKey<FormState>();
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Center(
@@ -75,112 +129,146 @@ class _SignUpPageState extends State<SignUpPage> {
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 30),
                           alignment: Alignment.center,
-                          child: Column(
-                            children: [
-                              TextField(
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                  ),
-                                  filled: true,
-                                  hintStyle: TextStyle(color: Colors.grey[800]),
-                                  hintText: "Name",
-                                  fillColor: Colors.grey.shade100,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              TextField(
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                  ),
-                                  filled: true,
-                                  hintStyle: TextStyle(color: Colors.grey[800]),
-                                  hintText: "Phone No.",
-                                  fillColor: Colors.grey.shade100,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              TextField(
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                  ),
-                                  filled: true,
-                                  hintStyle: TextStyle(color: Colors.grey[800]),
-                                  hintText: "Password",
-                                  fillColor: Colors.grey.shade100,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              TextField(
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                  ),
-                                  filled: true,
-                                  hintStyle: TextStyle(color: Colors.grey[800]),
-                                  hintText: "Confirm Password",
-                                  fillColor: Colors.grey.shade100,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              SizedBox(
-                                width: size.width,
-                                height: 50,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const DashBoardPage()));
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                TextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter some text';
+                                    }
+                                    return null;
                                   },
-                                  style: ElevatedButton.styleFrom(
-                                      foregroundColor: Colors.white,
-                                      backgroundColor:
-                                          Colors.blue[300], // foreground
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                      )),
-                                  child: const Text(
-                                    "Submit",
-                                    style: TextStyle(fontSize: 17),
+                                  controller: nameCotroller,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(50.0),
+                                    ),
+                                    filled: true,
+                                    hintStyle:
+                                        TextStyle(color: Colors.grey[800]),
+                                    hintText: "Name",
+                                    fillColor: Colors.grey.shade100,
                                   ),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 50,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text(
-                                    "Already have an account ? ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                TextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter some text';
+                                    }
+                                    return null;
+                                  },
+                                  controller: phoneNoController,
+                                  maxLength: 10,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(50.0),
+                                    ),
+                                    filled: true,
+                                    hintStyle:
+                                        TextStyle(color: Colors.grey[800]),
+                                    hintText: "Phone No.",
+                                    fillColor: Colors.grey.shade100,
                                   ),
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const SignInPage()));
-                                      },
-                                      child: const Text("SignIn"))
-                                ],
-                              )
-                            ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                TextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter some text';
+                                    }
+                                    return null;
+                                  },
+                                  controller: passController,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(50.0),
+                                    ),
+                                    filled: true,
+                                    hintStyle:
+                                        TextStyle(color: Colors.grey[800]),
+                                    hintText: "Password",
+                                    fillColor: Colors.grey.shade100,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                TextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter some text';
+                                    }
+                                    return null;
+                                  },
+                                  controller: confPassCotroller,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(50.0),
+                                        borderSide: const BorderSide(
+                                            color: Colors.red, width: 2)),
+                                    filled: true,
+                                    hintStyle:
+                                        TextStyle(color: Colors.grey[800]),
+                                    hintText: "Confirm Password",
+                                    fillColor: Colors.grey.shade100,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                SizedBox(
+                                  width: size.width,
+                                  height: 50,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Signup();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        foregroundColor: Colors.white,
+                                        backgroundColor:
+                                            Colors.blue[300], // foreground
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                        )),
+                                    child: const Text(
+                                      "Submit",
+                                      style: TextStyle(fontSize: 17),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 50,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      "Already have an account ? ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const SignInPage()));
+                                        },
+                                        child: const Text("SignIn"))
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ],

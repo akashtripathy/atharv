@@ -1,4 +1,3 @@
-import 'package:atharv/pages/sign_up.dart';
 import 'package:atharv/widgets/custom_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
@@ -81,6 +80,18 @@ class OtpVarificationPage extends StatelessWidget {
                                       title: const Text("Verification Code"),
                                       content: Text(
                                           'Code entered is $verificationCode'),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          DashBoardPage()));
+                                            },
+                                            child: Text("Ok"))
+                                      ],
                                     );
                                   });
                               Navigator.push(
