@@ -1,6 +1,5 @@
 import 'package:atharv/pages/phone_number_screen.dart';
 import 'package:atharv/pages/sign_in.dart';
-import 'package:atharv/pages/sign_up.dart';
 import 'package:flutter/material.dart';
 
 class WelcomePage extends StatelessWidget {
