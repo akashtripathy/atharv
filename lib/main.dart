@@ -1,5 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:atharv/pages/sign_up.dart';
+import 'package:atharv/pages/welcome_page.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -11,11 +12,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Clean Code',
+        title: 'Atharv',
         home: AnimatedSplashScreen(
             duration: 3000,
             splash: Icons.home,
-            nextScreen: const SignUpPage(),
+            // nextScreen: const SignUpPage(),
+            nextScreen: const WelcomePage(),
             splashTransition: SplashTransition.slideTransition,
             pageTransitionType: PageTransitionType.leftToRight,
             backgroundColor: Colors.blue));
