@@ -1,8 +1,9 @@
 // ignore_for_file: non_constant_identifier_names
 import 'package:atharv/pages/dashboard.dart';
-import 'package:atharv/pages/sign_up.dart';
+import 'package:atharv/pages/phone_number_screen.dart';
 import 'package:atharv/widgets/custom_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -11,7 +12,6 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  @override
   var phoneNoController = TextEditingController();
   var passController = TextEditingController();
   Future<void> Login() async {
@@ -59,9 +59,9 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  @override
   final _formKey = GlobalKey<FormState>();
 
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Center(
@@ -125,16 +125,21 @@ class _SignInPageState extends State<SignInPage> {
                                 TextFormField(
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter some text';
+                                      return 'Please enter phone no';
                                     }
                                     return null;
                                   },
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(r'[0-9]')),
+                                  ],
                                   controller: phoneNoController,
                                   maxLength: 10,
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(50.0),
                                     ),
+                                    counterText: '',
                                     filled: true,
                                     hintStyle:
                                         TextStyle(color: Colors.grey[800]),
@@ -148,11 +153,12 @@ class _SignInPageState extends State<SignInPage> {
                                 TextFormField(
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter some text';
+                                      return 'Please enter password';
                                     }
                                     return null;
                                   },
                                   controller: passController,
+                                  obscureText: true,
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(50.0),
@@ -205,7 +211,7 @@ class _SignInPageState extends State<SignInPage> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const SignUpPage()));
+                                                      const PhoneNumberScreen()));
                                         },
                                         child: const Text("SignUp"))
                                   ],

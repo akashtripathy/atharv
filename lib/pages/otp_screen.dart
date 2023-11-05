@@ -1,3 +1,4 @@
+import 'package:atharv/pages/dashboard.dart';
 import 'package:atharv/widgets/custom_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
@@ -55,7 +56,6 @@ class OtpVarificationPage extends StatelessWidget {
                   child: Container(
                     width: size.width,
                     height: size.height - 100,
-                    margin: const EdgeInsets.symmetric(horizontal: 15),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -73,32 +73,32 @@ class OtpVarificationPage extends StatelessWidget {
                             },
                             //runs when every textfield is filled
                             onSubmit: (String verificationCode) {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: const Text("Verification Code"),
-                                      content: Text(
-                                          'Code entered is $verificationCode'),
-                                      actions: [
-                                        TextButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          DashBoardPage()));
-                                            },
-                                            child: Text("Ok"))
-                                      ],
-                                    );
-                                  });
+                              // showDialog(
+                              //     context: context,
+                              //     builder: (context) {
+                              //       return AlertDialog(
+                              //         title: const Text("Verification Code"),
+                              //         content: Text(
+                              //             'Code entered is $verificationCode'),
+                              //         actions: [
+                              //           TextButton(
+                              //               onPressed: () {
+                              //                 Navigator.push(
+                              //                     context,
+                              //                     MaterialPageRoute(
+                              //                         builder: (BuildContext
+                              //                                 context) =>
+                              //                             const DashBoardPage()));
+                              //               },
+                              //               child: const Text("Ok"))
+                              //         ],
+                              //       );
+                              //     });
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const SignUpPage()));
+                                          const DashBoardPage()));
                             }, // end onSubmit
                           ),
                         ),

@@ -1,6 +1,7 @@
 import 'package:atharv/pages/otp_screen.dart';
 import 'package:atharv/widgets/custom_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class PhoneNumberScreen extends StatefulWidget {
   const PhoneNumberScreen({super.key});
@@ -11,8 +12,9 @@ class PhoneNumberScreen extends StatefulWidget {
 class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
   var phoneNoController = TextEditingController();
 
-  @override
   final _formKey = GlobalKey<FormState>();
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Center(
@@ -68,13 +70,6 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                         SizedBox(
                           height: size.height / 2,
                         ),
-                        //  Container(
-                        //         width: size.width,
-                        //         padding: const EdgeInsets.all(15),
-                        //         color: Colors.blue[300],
-                        //         child: const Text("Provide Your Phone Number", style: TextStyle(color: Colors.white),),
-                        //       ),
-                        // const SizedBox(height: 40,),
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 30),
                           alignment: Alignment.center,
@@ -86,14 +81,19 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                                 TextFormField(
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter some text';
+                                      return 'Please enter phone no';
                                     }
                                     return null;
                                   },
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(r'[0-9]')),
+                                  ],
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(50.0),
                                     ),
+                                    counterText: '',
                                     filled: true,
                                     hintStyle:
                                         TextStyle(color: Colors.grey[800]),

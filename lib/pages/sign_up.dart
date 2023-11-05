@@ -1,8 +1,8 @@
-import 'package:atharv/pages/dashboard.dart';
 import 'package:atharv/pages/phone_number_screen.dart';
-import 'package:atharv/pages/sign_in.dart';
+import 'package:atharv/pages/log_in.dart';
 import 'package:atharv/widgets/custom_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -16,7 +16,8 @@ class _SignUpPageState extends State<SignUpPage> {
   var phoneNoController = TextEditingController();
   var passController = TextEditingController();
   var confPassCotroller = TextEditingController();
-  Future<void> Signup() async {
+
+  Future<void> signUp() async {
     if (_formKey.currentState!.validate()) {
       if (phoneNoController.text.length < 10 &&
           phoneNoController.text.isNotEmpty) {
@@ -64,8 +65,8 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  @override
   final _formKey = GlobalKey<FormState>();
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Center(
@@ -136,7 +137,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 TextFormField(
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter some text';
+                                      return 'Please enter name';
                                     }
                                     return null;
                                   },
@@ -158,16 +159,21 @@ class _SignUpPageState extends State<SignUpPage> {
                                 TextFormField(
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter some text';
+                                      return 'Enter phonne no';
                                     }
                                     return null;
                                   },
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(r'[0-9]')),
+                                  ],
                                   controller: phoneNoController,
                                   maxLength: 10,
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(50.0),
                                     ),
+                                    counterText: '',
                                     filled: true,
                                     hintStyle:
                                         TextStyle(color: Colors.grey[800]),
@@ -181,11 +187,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                 TextFormField(
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter some text';
+                                      return 'Please enter password';
                                     }
                                     return null;
                                   },
                                   controller: passController,
+                                  obscureText: true,
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(50.0),
@@ -203,11 +210,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                 TextFormField(
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter some text';
+                                      return 'Please enter confirm password';
                                     }
                                     return null;
                                   },
                                   controller: confPassCotroller,
+                                  obscureText: true,
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                         borderRadius:
@@ -229,7 +237,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   height: 50,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      Signup();
+                                      signUp();
                                     },
                                     style: ElevatedButton.styleFrom(
                                         foregroundColor: Colors.white,
