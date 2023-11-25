@@ -1,10 +1,57 @@
-import 'package:atharv/pages/dashboard.dart';
+import 'package:atharv/pages/create_account.dart';
 import 'package:atharv/widgets/custom_layout.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
 
-class OtpVarificationPage extends StatelessWidget {
-  const OtpVarificationPage({super.key});
+class OtpVarificationPage extends StatefulWidget {
+  final String verificationId;
+  const OtpVarificationPage({super.key, required this.verificationId});
+
+  @override
+  State<OtpVarificationPage> createState() => _OtpVarificationPageState();
+}
+
+class _OtpVarificationPageState extends State<OtpVarificationPage> {
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  Future<void> signInWithPhoneNumber(
+      String verificationId, String smsCode) async {
+    ProgressDialog pd = ProgressDialog(context: context);
+    pd.show(
+        max: 100,
+        msg: 'Please wait...',
+        progressBgColor: Colors.black,
+        backgroundColor: Colors.white);
+    try {
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: verificationId,
+        smsCode: smsCode,
+      );
+
+      UserCredential userCredential =
+          await auth.signInWithCredential(credential);
+      print(userCredential);
+      // User successfully signed in
+      pd.close();
+      // You can navigate to the next screen or perform necessary actions
+      if (!mounted) return;
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              CreateAccountPage(userCredential: userCredential),
+        ),
+      );
+      print('User signed in: ${userCredential.user!.uid}');
+    } catch (e) {
+      // Handle sign-in errors (e.g., incorrect OTP)
+      print('Sign-in error: $e');
+      // You might want to show an error message to the user
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +119,10 @@ class OtpVarificationPage extends StatelessWidget {
                               //handle validation or checks here
                             },
                             //runs when every textfield is filled
-                            onSubmit: (String verificationCode) {
+                            onSubmit: (String verificationCode) async {
+                              await signInWithPhoneNumber(
+                                  widget.verificationId, verificationCode);
+
                               // showDialog(
                               //     context: context,
                               //     builder: (context) {
@@ -94,11 +144,6 @@ class OtpVarificationPage extends StatelessWidget {
                               //         ],
                               //       );
                               //     });
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const DashBoardPage()));
                             }, // end onSubmit
                           ),
                         ),

@@ -1,39 +1,45 @@
-import 'package:atharv/pages/phone_number_screen.dart';
+import 'package:atharv/pages/dashboard.dart';
 import 'package:atharv/pages/log_in.dart';
 import 'package:atharv/widgets/custom_layout.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class CreateAccountPage extends StatefulWidget {
+  final UserCredential userCredential;
+  const CreateAccountPage({super.key, required this.userCredential});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<CreateAccountPage> createState() => _CreateAccountPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _CreateAccountPageState extends State<CreateAccountPage> {
   var nameCotroller = TextEditingController();
   var phoneNoController = TextEditingController();
   var passController = TextEditingController();
   var confPassCotroller = TextEditingController();
 
   Future<void> signUp() async {
+    ProgressDialog pd = ProgressDialog(context: context);
     if (_formKey.currentState!.validate()) {
-      if (phoneNoController.text.length < 10 &&
-          phoneNoController.text.isNotEmpty) {
+      if (phoneNoController.text.length < 10) {
         _showMyDialog(
             "Your contact number should be of 10 digits, but it's ${phoneNoController.text.length}");
-      } else if (phoneNoController.text != "" &&
-          passController.text != "" &&
-          nameCotroller.text != "" &&
-          confPassCotroller.text == passController.text &&
-          phoneNoController.text.length == 10) {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const PhoneNumberScreen()));
+      } else if (passController.text.length < 8) {
+        _showMyDialog("Password must be of 8 charaters!");
+      } else if (nameCotroller.text.isEmpty) {
+        _showMyDialog("Name field is empty!");
       } else if (passController.text != confPassCotroller.text) {
         _showMyDialog("Confirm Password Did Not Match!");
       } else {
-        _showMyDialog("Please check that your fields are filled properly!");
+        pd.show(
+            max: 100,
+            msg: 'Please wait...',
+            progressBgColor: Colors.black,
+            backgroundColor: Colors.white);
+        await saveUserData();
       }
     }
   }
@@ -65,10 +71,44 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+  Future<void> saveUserData() async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String uid = widget.userCredential.user!.uid;
+    String? phone = widget.userCredential.user!.phoneNumber;
+    ProgressDialog pd = ProgressDialog(context: context);
+    try {
+      // Create patient data in Firestore
+      await firestore.collection('patients').doc(uid).set({
+        'type': 'primary',
+        'atharv_id': null,
+        'phone_number': phone.toString(),
+        'name': nameCotroller.text.toString(),
+        'password': passController.text.toString(),
+        'dob': null,
+        'blood_group': null,
+        'district': null,
+        'block': null,
+        'address': null,
+        'profile_pic': null,
+        'created_at': DateTime.now(),
+      });
+      pd.close();
+      if (!mounted) return;
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const SignInPage()));
+    } catch (e) {
+      _showMyDialog("Something went wrong");
+      print(e);
+    }
+  }
+
   final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    phoneNoController.text = widget.userCredential.user!.phoneNumber!;
+
     return Center(
       child: Container(
         color: Colors.white,
@@ -169,6 +209,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ],
                                   controller: phoneNoController,
                                   maxLength: 10,
+                                  enabled: false,
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(50.0),
@@ -230,7 +271,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ),
                                 ),
                                 const SizedBox(
-                                  height: 20,
+                                  height: 40,
                                 ),
                                 SizedBox(
                                   width: size.width,
@@ -256,25 +297,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                 const SizedBox(
                                   height: 50,
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      "Already have an account ? ",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    TextButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const SignInPage()));
-                                        },
-                                        child: const Text("SignIn"))
-                                  ],
-                                )
                               ],
                             ),
                           ),

@@ -1,8 +1,12 @@
 import 'package:atharv/pages/book_appointments.dart';
 import 'package:atharv/pages/health_report.dart';
 import 'package:atharv/pages/hub.dart';
+import 'package:atharv/pages/welcome_page.dart';
 import 'package:atharv/widgets/custom_layout.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashBoardPage extends StatefulWidget {
   const DashBoardPage({super.key});
@@ -20,6 +24,58 @@ class _DashBoardPageState extends State<DashBoardPage> {
     "Profiles",
     "Health Records"
   ];
+
+  // Function to log out the current user and navigate to the login screen
+  Future<void> signOutAndNavigateToLogin(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await FirebaseAuth.instance.signOut();
+    await prefs.clear();
+    // Navigate to the login screen
+    if (!mounted) return;
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const WelcomePage()),
+    );
+  }
+
+  Future<void> getPatientData(String uid) async {
+    try {
+      // Get a reference to the "patients" collection
+      CollectionReference patientsCollection =
+          FirebaseFirestore.instance.collection('patients');
+
+      // Get the document with the specified UID
+      DocumentSnapshot patientDocument =
+          await patientsCollection.doc(uid).get();
+
+      if (patientDocument.exists) {
+        // Access data from the document
+        Map<String, dynamic> patientData =
+            patientDocument.data()! as Map<String, dynamic>;
+        print('Patient data: $patientData');
+      } else {
+        print('No patient found with UID: $uid');
+      }
+    } catch (e) {
+      print('Error fetching patient data: $e');
+    }
+  }
+
+  // Perform asynchronous operations before updating the state
+  void asyncOperations() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(prefs.getString("uId"));
+    await getPatientData(prefs.getString("uId")!);
+    // Other asynchronous operations...
+  }
+
+  @override
+  void initState() {
+    asyncOperations();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -50,7 +106,10 @@ class _DashBoardPageState extends State<DashBoardPage> {
                                 child: const Text('Cancel'),
                               ),
                               TextButton(
-                                onPressed: () => Navigator.pop(context, 'OK'),
+                                onPressed: () {
+                                  Navigator.pop(context, 'OK');
+                                  signOutAndNavigateToLogin(context);
+                                },
                                 child: const Text('LogOut'),
                               ),
                             ],

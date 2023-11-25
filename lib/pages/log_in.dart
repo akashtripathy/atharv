@@ -2,8 +2,12 @@
 import 'package:atharv/pages/dashboard.dart';
 import 'package:atharv/pages/phone_number_screen.dart';
 import 'package:atharv/widgets/custom_layout.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -15,18 +19,24 @@ class _SignInPageState extends State<SignInPage> {
   var phoneNoController = TextEditingController();
   var passController = TextEditingController();
   Future<void> Login() async {
+    ProgressDialog pd = ProgressDialog(context: context);
     if (_formKey.currentState!.validate()) {
-      if (phoneNoController.text.length < 10 &&
-          phoneNoController.text.isNotEmpty) {
-        _showMyDialog(
-            "Your contact number should be of 10 digits, but it's ${phoneNoController.text.length}");
-      } else if (phoneNoController.text != "" &&
-          passController.text != "" &&
-          phoneNoController.text.length == 10) {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const DashBoardPage()));
+      if (phoneNoController.text.length < 10) {
+        _showMyDialog("Contact number should be of 10 digits!");
+      } else if (passController.text.isEmpty) {
+        _showMyDialog("Password should not be empty!");
       } else {
-        _showMyDialog("Please check that your fields are filled properly");
+        pd.show(
+            max: 100,
+            msg: 'Please wait...',
+            progressBgColor: Colors.black,
+            backgroundColor: Colors.white);
+        await signInWithPhoneAndPassword(
+            phoneNoController.text, passController.text);
+        pd.close();
+        if (!mounted) return;
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const DashBoardPage()));
       }
     }
   }
@@ -37,18 +47,17 @@ class _SignInPageState extends State<SignInPage> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('$alertTitle'),
-          content: const SingleChildScrollView(
+          title: const Text("Message!"),
+          content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('This is a demo alert dialog.'),
-                Text('Would you like to approve of this message?'),
+                Text(alertTitle),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Approve'),
+              child: const Text('Ok'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -57,6 +66,54 @@ class _SignInPageState extends State<SignInPage> {
         );
       },
     );
+  }
+
+  Future<void> signInWithPhoneAndPassword(
+    String phoneNumber,
+    String password,
+  ) async {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+    try {
+      // Find the user by their phone number in Firestore
+      QuerySnapshot users = await _firestore
+          .collection('patients')
+          .where('phone_number', isEqualTo: "+91$phoneNumber")
+          .limit(1)
+          .get();
+
+      if (users.docs.isNotEmpty) {
+        // If a user with the specified phone number is found
+        DocumentSnapshot userDoc = users.docs.first;
+        String storedPassword = userDoc['password'];
+
+        print("User: ${userDoc.id}");
+        print(storedPassword);
+
+        // Compare the entered password with the stored password
+        if (password == storedPassword) {
+          // Sign in the user with their phone number
+          ConfirmationResult authResult =
+              await _auth.signInWithPhoneNumber("+91$phoneNumber");
+
+          //Setting up shared preference for storing small datas
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setBool("isloggedIn", true);
+          prefs.setString("uId", userDoc.id);
+          prefs.setString("verificationId", authResult.verificationId);
+
+          print(
+              'User authenticated with phone number: ${authResult.verificationId}');
+        } else {
+          _showMyDialog("Incorrect Credential!");
+        }
+      } else {
+        _showMyDialog('User not found with the specified phone number');
+      }
+    } catch (e) {
+      print('Error during phone authentication: $e');
+    }
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -207,7 +264,7 @@ class _SignInPageState extends State<SignInPage> {
                                     ),
                                     TextButton(
                                         onPressed: () {
-                                          Navigator.push(
+                                          Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>

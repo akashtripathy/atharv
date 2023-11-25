@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "734027859448",
+    "project_id": "atharv-738cb",
+    "storage_bucket": "atharv-738cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734027859448:android:be0c0ab1d8eaa6f517820d",
+        "android_client_info": {
+          "package_name": "com.healthcare.atharv"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmzzMsaDxuiKNp4MenBR30RIRSC1v2BoY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

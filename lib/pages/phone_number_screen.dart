@@ -2,6 +2,8 @@ import 'package:atharv/pages/otp_screen.dart';
 import 'package:atharv/widgets/custom_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 
 class PhoneNumberScreen extends StatefulWidget {
   const PhoneNumberScreen({super.key});
@@ -13,6 +15,51 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
   var phoneNoController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  Future<void> _verifyPhoneNumber() async {
+    ProgressDialog pd = ProgressDialog(context: context);
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    final String phoneNumber =
+        '+91${phoneNoController.text}'; // Modify the country code as needed
+
+    pd.show(
+        max: 100,
+        msg: 'Sending OTP...',
+        progressBgColor: Colors.black,
+        backgroundColor: Colors.white);
+    await auth.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      verificationCompleted: (PhoneAuthCredential credential) {
+        // This callback will be invoked for instant verification (auto-retrieval of SMS code)
+        // You can add code to handle instant verification here.
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        pd.close();
+        if (e.code == 'invalid-phone-number') {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Phone number is not valid")));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Something went wrong!")));
+        }
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        // Navigate to OTP screen and pass verificationId
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                OtpVarificationPage(verificationId: verificationId),
+          ),
+        );
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        // This callback will be invoked after a timeout and can be used to show a button for manual code input.
+        // You can add code for a manual code input option here.
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,13 +157,9 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                                   width: size.width,
                                   height: 50,
                                   child: ElevatedButton(
-                                    onPressed: () {
+                                    onPressed: () async {
                                       if (_formKey.currentState!.validate()) {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const OtpVarificationPage()));
+                                        await _verifyPhoneNumber();
                                       }
                                     },
                                     style: ElevatedButton.styleFrom(
