@@ -1,6 +1,8 @@
 import 'package:atharv/pages/Hub.dart';
 import 'package:atharv/pages/full_list.dart';
 import 'package:atharv/pages/report_card.dart';
+import 'package:atharv/pages/update_profile.dart';
+import 'package:atharv/widgets/custom_layout.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -15,95 +17,152 @@ class _ProfilesPageState extends State<ProfilesPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Column(
-      children: [
-        SingleChildScrollView(
-          child: SizedBox(
-            width: size.width - 30,
-            height: size.height * 0.5,
-            child: buildFirestoreStream(),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        title: const Text(
+          "",
+          style: TextStyle(color: Colors.black, fontSize: 30),
+        ),
+        titleSpacing: 0,
+        elevation: 0,
+      ),
+      body: CustomPaint(
+        painter: MyCustomPainter("Profile"), // Change the type as needed
+        child: SingleChildScrollView(
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  Container(
+                    width: size.width,
+                    height: size.height / 5,
+                    decoration: const BoxDecoration(
+                        // color: Colors.lightBlueAccent,
+                        ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 30,
+                    ),
+                    child: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Profile",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 50,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black54),
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Column(
+                    children: [
+                      SingleChildScrollView(
+                        child: SizedBox(
+                          width: size.width - 30,
+                          height: size.height * 0.5,
+                          child: buildFirestoreStream(),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          const ShowFullListPage(
+                                            title: "Profiles List",
+                                          )));
+                            },
+                            child: const Text(
+                              "View All...",
+                              style: TextStyle(color: Colors.black87),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 15,
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          SizedBox(
+                            width: size.width * 0.4,
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            const HubPage("Add Member")));
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                  backgroundColor:
+                                      Colors.lightBlueAccent, // foreground
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  )),
+                              child: const Text(
+                                "Add Member",
+                                style: TextStyle(fontSize: 17),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: size.width * 0.4,
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                  backgroundColor:
+                                      Colors.lightBlueAccent, // foreground
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  )),
+                              child: const Text(
+                                "Delete Member",
+                                style: TextStyle(fontSize: 17),
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ],
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            const ShowFullListPage(
-                              title: "Profiles List",
-                            )));
-              },
-              child: const Text(
-                "View All...",
-                style: TextStyle(color: Colors.black87),
-              ),
-            ),
-            const SizedBox(
-              width: 15,
-            )
-          ],
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            SizedBox(
-              width: size.width * 0.4,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              const HubPage("Add Member")));
-                },
-                style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.lightBlueAccent, // foreground
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    )),
-                child: const Text(
-                  "Add Member",
-                  style: TextStyle(fontSize: 17),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: size.width * 0.4,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.lightBlueAccent, // foreground
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    )),
-                child: const Text(
-                  "Delete Member",
-                  style: TextStyle(fontSize: 17),
-                ),
-              ),
-            )
-          ],
-        )
-      ],
+      ),
     );
   }
 
   Widget buildFirestoreStream() {
     final size = MediaQuery.of(context).size;
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('patients').snapshots(),
-      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      stream: FirebaseFirestore.instance
+          .collection('patients')
+          .doc(
+              'gLdN6TqdDZewpQ0lKzvrotVCUqJ2') // Replace 'specific_document_id' with the actual ID of the document you want
+          .snapshots(),
+      builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator(); // Display a loading indicator while fetching data
         }
@@ -113,18 +172,18 @@ class _ProfilesPageState extends State<ProfilesPage> {
         }
 
         // Check if there are no documents
-        if (snapshot.data?.docs.isEmpty ?? true) {
+        if (!snapshot.hasData || !snapshot.data!.exists) {
           return const Center(child: Text('No documents available'));
         }
 
         // Build the UI using the data from the QuerySnapshot
         return ListView.separated(
-          itemCount: snapshot.data!.docs.length,
+          itemCount: 1,
           separatorBuilder: (context, int int) {
             return const Divider();
           },
           itemBuilder: (BuildContext context, int index) {
-            DocumentSnapshot document = snapshot.data!.docs[index];
+            DocumentSnapshot document = snapshot.data!;
             Map<String, dynamic> data = document.data() as Map<String, dynamic>;
             return Row(
               children: [
@@ -154,35 +213,40 @@ class _ProfilesPageState extends State<ProfilesPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                            width: 80,
+                            // width: 120,
+                            height: 20,
                             child: Text("Name : ${data['name']}"),
                           ),
                           SizedBox(
-                            width: 80,
+                            // width: 80,
+                            height: 20,
                             child: Text("ID : ${data['atharv_id']}"),
                           ),
-                          SizedBox(
-                            width: 80,
-                            child: Text(
-                              "Age : ${data['dob']} ",
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                // width: 80,
+                                height: 20,
+                                child: Text(
+                                  "Age : ${data['dob']} ",
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              SizedBox(
+                                height: 20,
+                                // width: 100,
+                                child: Text(
+                                  "Blood Group : ${data['blood_group']} ",
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: 100,
-                            child: Text(
-                              "Blood Group : ${data['blood_group']} ",
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          )
-                        ],
-                      )
                     ],
                   ),
                 ),
@@ -194,7 +258,9 @@ class _ProfilesPageState extends State<ProfilesPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      const HubPage("Update Profile")));
+                                      UpdateProfilePage(
+                                        data: data,
+                                      )));
                         },
                         icon: Image.asset(
                           "images/edit doc.png",

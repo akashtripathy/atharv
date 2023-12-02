@@ -1,6 +1,9 @@
 import 'package:atharv/pages/Hub.dart';
 import 'package:atharv/pages/book_appointments.dart';
+import 'package:atharv/pages/find_doctor.dart';
 import 'package:atharv/pages/health_report.dart';
+import 'package:atharv/pages/my_bookings.dart';
+import 'package:atharv/pages/profile.dart';
 import 'package:atharv/pages/welcome_page.dart';
 import 'package:atharv/widgets/custom_layout.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,14 +19,14 @@ class DashBoardPage extends StatefulWidget {
 }
 
 class _DashBoardPageState extends State<DashBoardPage> {
-  List<String> myList = [
-    "Book Appointment",
-    "My Bookings",
-    "Find Hospital",
-    "Find doctor",
-    "Profiles",
-    "Health Records"
-  ];
+  final Map<String, dynamic> pageList = {
+    "Book Appointment": const BookAppointments(),
+    "My Bookings": const MyBookingsPage(),
+    "Find Hospital": const FindDoctorPage(),
+    "Find doctor": const FindDoctorPage(),
+    "Profiles": const ProfilesPage(),
+    "Health Records": const HealthReports()
+  };
 
   // Function to log out the current user and navigate to the login screen
   Future<void> signOutAndNavigateToLogin(BuildContext context) async {
@@ -151,45 +154,48 @@ class _DashBoardPageState extends State<DashBoardPage> {
                     child: Container(
                       height: size.height - 278,
                       margin: const EdgeInsets.symmetric(horizontal: 15),
-                      child: GridView.count(
+                      child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 30,
+                          mainAxisSpacing: 30,
+                        ),
+                        itemCount: pageList.length,
                         primary: false,
                         padding: const EdgeInsets.all(20),
-                        crossAxisSpacing: 30,
-                        mainAxisSpacing: 30,
-                        crossAxisCount: 2,
-                        children: <Widget>[
-                          for (var i = 0; i < myList.length; i++)
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            myList[i] == "Book Appointment"
-                                                ? const BookAppointments()
-                                                : myList[i] == "Health Records"
-                                                    ? const HealthReports()
-                                                    : HubPage(
-                                                        myList[i].toString())));
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: Colors.teal[100],
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Text(
-                                  myList[i].toString(),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                        itemBuilder: (context, index) {
+                          final List<String> pageKeys = pageList.keys.toList();
+                          final List<dynamic> pageValues =
+                              pageList.values.toList();
+                          final dynamic pageValue = pageValues[index];
+                          final String pageKey = pageKeys[index];
+
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => pageValue));
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Colors.teal[100],
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Text(
+                                pageKey,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                        ],
+                          );
+                        },
                       ),
                     ),
                   ),

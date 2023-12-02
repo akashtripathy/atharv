@@ -40,30 +40,6 @@ class _HubPageState extends State<HubPage> {
                         )
                       : const SizedBox(),
                   titleSpacing: 0,
-                  actions: [
-                    IconButton(
-                        onPressed: () {
-                          showDialog<String>(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              title: const Text('Are You Sure!'),
-                              content: const Text('Do you want to logout?'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(context, 'Cancel'),
-                                  child: const Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context, 'OK'),
-                                  child: const Text('LogOut'),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.power_settings_new_rounded))
-                  ],
                   elevation: 0,
                 ),
                 body: SingleChildScrollView(
@@ -107,7 +83,7 @@ class _HubPageState extends State<HubPage> {
                               : widget.testText == "Profiles"
                                   ? const ProfilesPage()
                                   : widget.testText == "Update Profile"
-                                      ? const UpdateProfilePage()
+                                      ? const ProfilesPage()
                                       : widget.testText == "Add Member"
                                           ? const AddMemberPage()
                                           : widget.testText == "Health Records"
