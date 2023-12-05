@@ -18,13 +18,14 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   var phoneNoController = TextEditingController();
   var passController = TextEditingController();
+  late ProgressDialog pd;
   Future<void> Login() async {
-    ProgressDialog pd = ProgressDialog(context: context);
+    pd = ProgressDialog(context: context);
     if (_formKey.currentState!.validate()) {
       if (phoneNoController.text.length < 10) {
         _showMyDialog("Contact number should be of 10 digits!");
-      } else if (passController.text.isEmpty) {
-        _showMyDialog("Password should not be empty!");
+      } else if (passController.text.length < 8) {
+        _showMyDialog("Password should be 0f minimum 8 digit!");
       } else {
         pd.show(
             max: 100,
@@ -33,10 +34,10 @@ class _SignInPageState extends State<SignInPage> {
             backgroundColor: Colors.white);
         await signInWithPhoneAndPassword(
             phoneNoController.text, passController.text);
-        pd.close();
-        if (!mounted) return;
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const DashBoardPage()));
+        // pd.close();
+        // if (!mounted) return;
+        // Navigator.pushReplacement(context,
+        //     MaterialPageRoute(builder: (context) => const DashBoardPage()));
       }
     }
   }
@@ -72,12 +73,12 @@ class _SignInPageState extends State<SignInPage> {
     String phoneNumber,
     String password,
   ) async {
-    FirebaseAuth _auth = FirebaseAuth.instance;
-    FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    FirebaseAuth auth = FirebaseAuth.instance;
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     try {
       // Find the user by their phone number in Firestore
-      QuerySnapshot users = await _firestore
+      QuerySnapshot users = await firestore
           .collection('patients')
           .where('phone_number', isEqualTo: "+91$phoneNumber")
           .limit(1)
@@ -95,7 +96,7 @@ class _SignInPageState extends State<SignInPage> {
         if (password == storedPassword) {
           // Sign in the user with their phone number
           ConfirmationResult authResult =
-              await _auth.signInWithPhoneNumber("+91$phoneNumber");
+              await auth.signInWithPhoneNumber("+91$phoneNumber");
 
           //Setting up shared preference for storing small datas
           SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -105,13 +106,21 @@ class _SignInPageState extends State<SignInPage> {
 
           print(
               'User authenticated with phone number: ${authResult.verificationId}');
+
+          pd.close();
+          if (!mounted) return;
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const DashBoardPage()));
         } else {
+          pd.close();
           _showMyDialog("Incorrect Credential!");
         }
       } else {
+        pd.close();
         _showMyDialog('User not found with the specified phone number');
       }
     } catch (e) {
+      pd.close();
       print('Error during phone authentication: $e');
     }
   }

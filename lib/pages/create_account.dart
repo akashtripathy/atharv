@@ -1,4 +1,3 @@
-import 'package:atharv/pages/dashboard.dart';
 import 'package:atharv/pages/log_in.dart';
 import 'package:atharv/widgets/custom_layout.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

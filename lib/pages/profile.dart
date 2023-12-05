@@ -5,6 +5,7 @@ import 'package:atharv/pages/update_profile.dart';
 import 'package:atharv/widgets/custom_layout.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilesPage extends StatefulWidget {
   const ProfilesPage({super.key});
@@ -14,6 +15,20 @@ class ProfilesPage extends StatefulWidget {
 }
 
 class _ProfilesPageState extends State<ProfilesPage> {
+  String uId = 'null';
+  // Perform asynchronous operations before updating the state
+  void asyncOperations() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    uId = prefs.getString("uId")!;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    asyncOperations();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -67,7 +82,9 @@ class _ProfilesPageState extends State<ProfilesPage> {
                         child: SizedBox(
                           width: size.width - 30,
                           height: size.height * 0.5,
-                          child: buildFirestoreStream(),
+                          child: uId == 'null'
+                              ? const SizedBox()
+                              : buildFirestoreStream(),
                         ),
                       ),
                       Row(
@@ -160,7 +177,7 @@ class _ProfilesPageState extends State<ProfilesPage> {
       stream: FirebaseFirestore.instance
           .collection('patients')
           .doc(
-              'gLdN6TqdDZewpQ0lKzvrotVCUqJ2') // Replace 'specific_document_id' with the actual ID of the document you want
+              uId) // Replace 'specific_document_id' with the actual ID of the document you want
           .snapshots(),
       builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {

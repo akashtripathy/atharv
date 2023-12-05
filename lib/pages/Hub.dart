@@ -1,8 +1,6 @@
 import 'package:atharv/pages/add_member.dart';
 import 'package:atharv/pages/health_report.dart';
 import 'package:atharv/pages/my_bookings.dart';
-import 'package:atharv/pages/profile.dart';
-import 'package:atharv/pages/update_profile.dart';
 import 'package:atharv/widgets/custom_layout.dart';
 import 'package:flutter/material.dart';
 
@@ -81,9 +79,9 @@ class _HubPageState extends State<HubPage> {
                           widget.testText == "My Bookings"
                               ? const MyBookingsPage()
                               : widget.testText == "Profiles"
-                                  ? const ProfilesPage()
+                                  ? const MyBookingsPage()
                                   : widget.testText == "Update Profile"
-                                      ? const ProfilesPage()
+                                      ? const MyBookingsPage()
                                       : widget.testText == "Add Member"
                                           ? const AddMemberPage()
                                           : widget.testText == "Health Records"
