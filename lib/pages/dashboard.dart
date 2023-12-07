@@ -1,5 +1,6 @@
 import 'package:atharv/pages/book_appointments.dart';
 import 'package:atharv/pages/find_doctor.dart';
+import 'package:atharv/pages/find_hospital.dart';
 import 'package:atharv/pages/health_report.dart';
 import 'package:atharv/pages/my_bookings.dart';
 import 'package:atharv/pages/profile.dart';
@@ -21,7 +22,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
   final Map<String, dynamic> pageList = {
     "Book Appointment": const BookAppointments(),
     "My Bookings": const MyBookingsPage(),
-    "Find Hospital": const FindDoctorPage(),
+    "Find Hospital": const FindHospitalPage(),
     "Find doctor": const FindDoctorPage(),
     "Profiles": const ProfilesPage(),
     "Health Records": const HealthReports()

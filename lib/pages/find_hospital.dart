@@ -2,14 +2,14 @@ import 'package:atharv/widgets/custom_layout.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class FindDoctorPage extends StatefulWidget {
-  const FindDoctorPage({super.key});
+class FindHospitalPage extends StatefulWidget {
+  const FindHospitalPage({super.key});
 
   @override
-  State<FindDoctorPage> createState() => _FindDoctorPageState();
+  State<FindHospitalPage> createState() => _FindHospitalPageState();
 }
 
-class _FindDoctorPageState extends State<FindDoctorPage> {
+class _FindHospitalPageState extends State<FindHospitalPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -44,7 +44,7 @@ class _FindDoctorPageState extends State<FindDoctorPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          "Find Doctor",
+                          "Find Hospital",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 50,
@@ -76,7 +76,7 @@ class _FindDoctorPageState extends State<FindDoctorPage> {
     final size = MediaQuery.of(context).size;
     return StreamBuilder(
       stream: FirebaseFirestore.instance
-          .collection('doctors')
+          .collection('hospitals')
           .snapshots(), // Use .snapshots() to listen for changes in the collection
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -114,10 +114,10 @@ class _FindDoctorPageState extends State<FindDoctorPage> {
                     height: 70,
                     width: 70,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(200),
+                        borderRadius: BorderRadius.circular(20),
                         border: Border.all(color: Colors.black54, width: 1),
                         image: const DecorationImage(
-                            image: AssetImage("images/images.png"))),
+                            image: AssetImage("images/building.png"))),
                   ),
                   const SizedBox(
                     width: 10,
@@ -128,52 +128,20 @@ class _FindDoctorPageState extends State<FindDoctorPage> {
                       SizedBox(
                         // width: 120,
                         height: 20,
-                        child: Text(
-                            "Name : ${data['first_name']} ${data['last_name']}"),
+                        child: Text("Name : ${data['hospital_name']}"),
                       ),
                       SizedBox(
                         // width: 80,
                         height: 20,
-                        child: Text("ID : ${data['d_id']}"),
+                        child: Text("ID : ${data['h_id']}"),
                       ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            // width: 80,
-                            // height: 20,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text("Specialists:"),
-                                Row(
-                                  children: List<Widget>.generate(
-                                    data['specialist'].length,
-                                    (int i) {
-                                      return Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 8.0),
-                                        child: Chip(
-                                          label: Text(data['specialist'][i]),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          // SizedBox(
-                          //   height: 20,
-                          //   // width: 100,
-                          //   child: Text(
-                          //     "Blood Group : ${data['blood_group']} ",
-                          //     overflow: TextOverflow.ellipsis,
-                          //   ),
-                          // ),
-                        ],
+                      SizedBox(
+                        height: 20,
+                        // width: 100,
+                        child: Text(
+                          "Address : ${data['address']} ",
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
                   ),
