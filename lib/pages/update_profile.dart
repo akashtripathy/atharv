@@ -68,8 +68,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
 
   @override
   void initState() {
-    _id.text = widget.data['atharv_id'];
-    _name.text = widget.data['name'];
+    _id.text = widget.data['atharv_id'] == null ? "" : widget.data['atharv_id'];
+    _name.text = widget.data['name'] == null ? "" : widget.data['name'];
     _dob.text = widget.data['dob'] == null ? "" : widget.data['dob'];
     _bloodGroup.text =
         widget.data['blood_group'] == null ? "" : widget.data['blood_group'];
@@ -79,6 +79,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     _address.text =
         widget.data['address'] == null ? "" : widget.data['address'];
     _gender.text = widget.data['gender'] == null ? "" : widget.data['gender'];
+    setState(() {});
     super.initState();
   }
 

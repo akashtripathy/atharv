@@ -95,17 +95,17 @@ class _SignInPageState extends State<SignInPage> {
         // Compare the entered password with the stored password
         if (password == storedPassword) {
           // Sign in the user with their phone number
-          ConfirmationResult authResult =
-              await auth.signInWithPhoneNumber("+91$phoneNumber");
+          // ConfirmationResult authResult =
+          // await auth.verifyPhoneNumber("+91$phoneNumber");
 
           //Setting up shared preference for storing small datas
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setBool("isloggedIn", true);
           prefs.setString("uId", userDoc.id);
-          prefs.setString("verificationId", authResult.verificationId);
+          // prefs.setString("verificationId", authResult.verificationId);
 
-          print(
-              'User authenticated with phone number: ${authResult.verificationId}');
+          // print(
+          //     'User authenticated with phone number: ${authResult.verificationId}');
 
           pd.close();
           if (!mounted) return;

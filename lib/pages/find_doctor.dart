@@ -144,7 +144,7 @@ class _FindDoctorPageState extends State<FindDoctorPage> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text("Specialists:"),
+                                const Text("Specialists: "),
                                 Row(
                                   children: List<Widget>.generate(
                                     data['specialist'].length,
@@ -152,9 +152,7 @@ class _FindDoctorPageState extends State<FindDoctorPage> {
                                       return Padding(
                                         padding:
                                             const EdgeInsets.only(right: 8.0),
-                                        child: Chip(
-                                          label: Text(data['specialist'][i]),
-                                        ),
+                                        child: Text(data['specialist'][i]),
                                       );
                                     },
                                   ),

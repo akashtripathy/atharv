@@ -1,5 +1,4 @@
 import 'package:atharv/pages/Hub.dart';
-import 'package:atharv/pages/full_list.dart';
 import 'package:atharv/pages/report_card.dart';
 import 'package:atharv/pages/update_profile.dart';
 import 'package:atharv/widgets/custom_layout.dart';
@@ -81,91 +80,66 @@ class _ProfilesPageState extends State<ProfilesPage> {
                       SingleChildScrollView(
                         child: SizedBox(
                           width: size.width - 30,
-                          height: size.height * 0.5,
+                          height: size.height,
                           child: uId == 'null'
                               ? const SizedBox()
                               : buildFirestoreStream(),
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          const ShowFullListPage(
-                                            title: "Profiles List",
-                                          )));
-                            },
-                            child: const Text(
-                              "View All...",
-                              style: TextStyle(color: Colors.black87),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 15,
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          SizedBox(
-                            width: size.width * 0.4,
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            const HubPage("Add Member")));
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  foregroundColor: Colors.white,
-                                  backgroundColor:
-                                      Colors.lightBlueAccent, // foreground
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  )),
-                              child: const Text(
-                                "Add Member",
-                                style: TextStyle(fontSize: 17),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: size.width * 0.4,
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  foregroundColor: Colors.white,
-                                  backgroundColor:
-                                      Colors.lightBlueAccent, // foreground
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  )),
-                              child: const Text(
-                                "Delete Member",
-                                style: TextStyle(fontSize: 17),
-                              ),
-                            ),
-                          )
-                        ],
-                      )
                     ],
                   )
                 ],
               ),
             ],
           ),
+        ),
+      ),
+      bottomSheet: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            SizedBox(
+              width: size.width * 0.45,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const HubPage("Add Member")));
+                },
+                style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.lightBlueAccent, // foreground
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    )),
+                child: const Text(
+                  "Add Member",
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: size.width * 0.45,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.lightBlueAccent, // foreground
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    )),
+                child: const Text(
+                  "Delete Member",
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -239,28 +213,24 @@ class _ProfilesPageState extends State<ProfilesPage> {
                             height: 20,
                             child: Text("ID : ${data['atharv_id']}"),
                           ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                // width: 80,
-                                height: 20,
-                                child: Text(
-                                  "Age : ${data['dob']} ",
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              SizedBox(
-                                height: 20,
-                                // width: 100,
-                                child: Text(
-                                  "Blood Group : ${data['blood_group']} ",
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
+                          SizedBox(
+                            // width: 80,
+                            height: 20,
+                            child: Text(
+                              "Age : ${data['dob']} ",
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          SizedBox(
+                            height: 20,
+                            // width: 100,
+                            child: Text(
+                              "Blood Group : ${data['blood_group']} ",
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ],
                       ),
